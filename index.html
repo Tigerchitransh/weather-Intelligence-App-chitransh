@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Atmosphere IQ - Weather Intelligence</title>
+    <meta name="description" content="Production-ready Meteorological Intelligence single page application providing hyper-local forecasts, 7-day outlooks, and actionable lifestyle & safety heuristics." />
+    <meta property="og:title" content="Atmosphere IQ - Weather Intelligence" />
+    <meta property="og:description" content="Production-ready Meteorological Intelligence single page application providing hyper-local forecasts, 7-day outlooks, and actionable lifestyle & safety heuristics." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- Google Fonts Preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Application Stylesheet -->
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <!-- Screen Reader Live Status Region -->
+    <div id="aria-live-status" class="sr-only" aria-live="polite" role="status"></div>
+
+    <main class="app-container">
+      <!-- Header Bar -->
+      <header class="header-bar" role="banner">
+        <div class="brand-wrapper">
+          <div class="brand-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17.5 19H9a5 5 0 0 1 0-10 4.8 4.8 0 0 1 2 .45 5.5 5.5 0 0 1 9.5 4.55A3.5 3.5 0 0 1 17.5 19z" />
+              <polyline points="13 11 11 15 15 15 13 19" stroke="#fbbf24" stroke-width="2.5" />
+            </svg>
+          </div>
+          <div class="brand-text">
+            <h1>Atmosphere IQ</h1>
+            <p>Meteorological Intelligence & Advisory Engine</p>
+          </div>
+        </div>
+
+        <div class="header-controls">
+          <!-- Metric / Imperial Toggle -->
+          <div class="unit-toggle-group" role="group" aria-label="Temperature unit selection">
+            <button type="button" class="unit-btn active" data-unit="C" aria-pressed="true" aria-label="Celsius">°C</button>
+            <button type="button" class="unit-btn" data-unit="F" aria-pressed="false" aria-label="Fahrenheit">°F</button>
+          </div>
+
+          <!-- Dark / Light Theme Toggle -->
+          <button type="button" id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle dark and light theme">
+            <span id="theme-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="5" />
+                <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+              </svg>
+            </span>
+          </button>
+        </div>
+      </header>
+
+      <!-- City Search & Geocoding Bar -->
+      <section class="search-section" aria-label="Location search and selection">
+        <form id="search-form" class="search-bar-wrapper" role="search" novalidate>
+          <div class="search-input-box">
+            <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <label for="search-input" class="sr-only">Search city, country, or location</label>
+            <input
+              type="text"
+              id="search-input"
+              class="search-input"
+              placeholder="Search any global city (e.g., Tokyo, London, Zurich)..."
+              autocomplete="off"
+              spellcheck="false"
+              required
+            />
+            <button type="button" id="clear-search-btn" class="clear-btn" aria-label="Clear search input">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </button>
+          </div>
+
+          <button type="submit" id="search-btn" class="search-submit-btn" aria-label="Submit search query">
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <span>Search</span>
+          </button>
+
+          <button type="button" id="geo-btn" class="geo-locate-btn" aria-label="Use current GPS location" title="Use current GPS position">
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polygon points="3 11 22 2 13 21 11 13 3 11"></polygon>
+            </svg>
+            <span>My Location</span>
+          </button>
+        </form>
+
+        <!-- Quick-Filter Global City Pills -->
+        <nav class="quick-chips-wrapper" aria-label="Popular cities">
+          <span class="chips-label">Popular:</span>
+          <button type="button" class="city-chip active" data-city="Tokyo">Tokyo</button>
+          <button type="button" class="city-chip" data-city="London">London</button>
+          <button type="button" class="city-chip" data-city="New York">New York</button>
+          <button type="button" class="city-chip" data-city="Paris">Paris</button>
+          <button type="button" class="city-chip" data-city="San Francisco">San Francisco</button>
+          <button type="button" class="city-chip" data-city="Sydney">Sydney</button>
+          <button type="button" class="city-chip" data-city="Dubai">Dubai</button>
+          <button type="button" class="city-chip" data-city="Singapore">Singapore</button>
+        </nav>
+      </section>
+
+      <!-- Alert Notification Banner -->
+      <div id="alert-banner" class="alert-banner" role="alert" aria-live="assertive">
+        <div class="alert-content">
+          <svg class="alert-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+          <span id="alert-message">Notice message goes here</span>
+        </div>
+        <button type="button" id="alert-close-btn" class="alert-close-btn" aria-label="Dismiss alert">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Loading State -->
+      <div id="loading-overlay" class="loading-overlay" role="status" aria-busy="true">
+        <div class="spinner" aria-hidden="true"></div>
+        <span id="loading-text">Synchronizing atmospheric satellite telemetry...</span>
+      </div>
+
+      <!-- Current Weather Hero Display -->
+      <section id="weather-hero" class="weather-hero-card" aria-label="Current Weather Conditions">
+        <!-- Injected dynamically via app.js renderHeroCard() -->
+      </section>
+
+      <!-- 7-Day Meteorological Forecast Grid -->
+      <section class="forecast-section" aria-labelledby="forecast-heading">
+        <div class="section-header">
+          <div class="section-title-wrap">
+            <h2 id="forecast-heading">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="16" y1="2" x2="16" y2="6"></line>
+                <line x1="8" y1="2" x2="8" y2="6"></line>
+                <line x1="3" y1="10" x2="21" y2="10"></line>
+              </svg>
+              7-Day Meteorological Forecast
+            </h2>
+            <p>High-resolution daily projections with proportional thermal rails & precipitation accumulation</p>
+          </div>
+          <span class="section-badge">Model: Open-Meteo GFS/ECMWF</span>
+        </div>
+
+        <div id="forecast-grid" class="forecast-scroll-container" role="region" aria-label="7-day daily forecast cards">
+          <!-- Injected dynamically via app.js renderForecastGrid() -->
+        </div>
+      </section>
+
+      <!-- Smart Insights & Planning Intelligence Panel -->
+      <section class="insights-section" aria-labelledby="intelligence-heading">
+        <div class="section-header">
+          <div class="section-title-wrap">
+            <h2 id="intelligence-heading">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+              </svg>
+              Smart Insights & Planning Intelligence
+            </h2>
+            <p>Automated heuristic decision engine assessing thermal strain, rainfall risk, transit viability, and multi-day shifts</p>
+          </div>
+          <span class="section-badge">Algorithmic Heuristics</span>
+        </div>
+
+        <div id="intelligence-grid" class="insights-grid" role="region" aria-label="Heuristic intelligence advisory cards">
+          <!-- Injected dynamically via app.js renderIntelligencePanels() -->
+        </div>
+      </section>
+
+      <!-- Footer Bar -->
+      <footer class="app-footer" role="contentinfo">
+        <div class="footer-source">
+          <span>Data provided by <a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">Open-Meteo</a></span>
+          <span>•</span>
+          <span>Zero backend build requirement • Static SPA ready</span>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 0.85rem;">
+          <span class="tabular-nums" style="font-size: 0.775rem;">Last Synchronized: <span id="last-sync-time">--:--:--</span></span>
+          <button type="button" id="refresh-btn" class="refresh-trigger-btn" aria-label="Refresh current weather data">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="23 4 23 10 17 10"></polyline>
+              <polyline points="1 20 1 14 7 14"></polyline>
+              <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+            </svg>
+            <span>Refresh</span>
+          </button>
+        </div>
+      </footer>
+    </main>
+
+    <!-- Client-side Application Script -->
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,6 @@
+{
+  "name": "Atmosphere IQ - Weather Intelligence",
+  "description": "Production-ready Meteorological Intelligence single page application providing hyper-local forecasts, 7-day outlooks, and actionable lifestyle & safety heuristics.",
+  "requestFramePermissions": ["geolocation"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
